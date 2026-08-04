@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Demande d'inscription{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Demande d'inscription</h2>
+
+<a href="{% url 'dashboard_etudiant' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour au tableau de bord</a>
+
+<div class="card p-4" style="max-width: 600px;">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Filière</label>
+            <select name="filiere" class="form-select" required>
+                <option value="" selected disabled>Choisissez une filière</option>
+                {% for filiere in filieres %}
+                <option value="{{ filiere.id }}">{{ filiere.nom_filiere }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Niveau</label>
+            <select name="niveau" class="form-select" required>
+                <option value="" selected disabled>Choisissez un niveau</option>
+                {% for niveau in niveaux %}
+                <option value="{{ niveau.id }}">{{ niveau.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Année académique</label>
+            <select name="annee_academique" class="form-select" required>
+                <option value="" selected disabled>Choisissez une année</option>
+                {% for annee in annees %}
+                <option value="{{ annee.id }}">{{ annee.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <hr>
+
+        <div class="mb-3">
+            <label class="form-label">Votre numéro de téléphone</label>
+            <input type="tel" name="telephone_inscription" class="form-control" placeholder="Ex: 70 12 34 56" required>
+            <small class="text-muted">Ce numéro servira à vous identifier auprès du caissier lors du paiement.</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Numéro de téléphone du parent / tuteur</label>
+            <input type="tel" name="telephone_parent" class="form-control" placeholder="Ex: 76 12 34 56" value="{{ telephone_parent_actuel|default:'' }}">
+            <small class="text-muted">Contact d'urgence, utilisé en cas d'absence ou de problème vous concernant.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Soumettre ma demande</button>
+    </form>
+</div>
+{% endblock %}

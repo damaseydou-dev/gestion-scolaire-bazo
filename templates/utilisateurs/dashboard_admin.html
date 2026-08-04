@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Tableau de bord Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Tableau de bord Administrateur</h2>
+
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Filières</h5>
+            <a href="/admin/academique/filiere/" class="btn btn-outline-primary btn-sm mt-2">Gérer</a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Inscriptions</h5>
+            <a href="/admin/inscriptions/inscription/" class="btn btn-outline-primary btn-sm mt-2">Gérer</a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Cours</h5>
+            <a href="/admin/cours/cours/" class="btn btn-outline-primary btn-sm mt-2">Gérer</a>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Emplois du temps</h5>
+            <a href="/admin/emploi_temps/emploidutemps/" class="btn btn-outline-primary btn-sm mt-2">Gérer</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Effectif des étudiants</h5>
+            <a href="{% url 'effectif' %}" class="btn btn-primary btn-sm mt-2">Voir l'effectif</a>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Frais de scolarité (grille)</h5>
+            <a href="/admin/paiements/fraisscolarite/" class="btn btn-outline-primary btn-sm mt-2">Gérer</a>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Relevés de notes</h5>
+            <a href="{% url 'liste_etudiants_releve' %}" class="btn btn-primary btn-sm mt-2">Générer un relevé</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Disponibilité des salles</h5>
+            <a href="{% url 'disponibilite_salles' %}" class="btn btn-primary btn-sm mt-2">Voir les disponibilités</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card p-3 text-center">
+            <h5 class="text-muted">Listes de classes</h5>
+            <a href="{% url 'liste_classes' %}" class="btn btn-primary btn-sm mt-2">Voir les listes</a>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4 mt-3">
+    <p class="mb-0">Bienvenue sur votre espace administrateur. Utilisez les raccourcis ci-dessus ou l'
+        <a href="/admin/">interface d'administration complète</a> pour gérer la plateforme.
+    </p>
+</div>
+{% endblock %}

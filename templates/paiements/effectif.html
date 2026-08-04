@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Effectif des étudiants{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Effectif total des étudiants inscrits</h2>
+
+<a href="{% url 'dashboard_admin' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour au tableau de bord</a>
+
+<div class="card p-4 mb-3">
+    <h1 class="display-4">{{ total }}</h1>
+    <p class="text-muted mb-0">étudiant(s) inscrit(s) avec un statut validé</p>
+</div>
+
+<div class="card p-3">
+    <h5>Répartition par filière / niveau</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Filière / Niveau</th>
+                <th>Effectif</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cle, valeur in repartition.items %}
+            <tr>
+                <td>{{ cle }}</td>
+                <td>{{ valeur }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

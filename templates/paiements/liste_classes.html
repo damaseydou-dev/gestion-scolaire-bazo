@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Listes de classes{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Listes de classes</h2>
+
+<a href="{% url 'dashboard_admin' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour au tableau de bord</a>
+
+<div class="card p-3">
+    {% if liste_classes %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Filière</th>
+                <th>Niveau</th>
+                <th>Année académique</th>
+                <th>Effectif</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for classe in liste_classes %}
+            <tr>
+                <td>{{ classe.filiere }}</td>
+                <td>{{ classe.niveau }}</td>
+                <td>{{ classe.annee }}</td>
+                <td>{{ classe.effectif }}</td>
+                <td>
+                    <a href="{% url 'liste_etudiants_classe' classe.filiere.id classe.niveau.id classe.annee.id %}" class="btn btn-primary btn-sm">Voir la liste</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">Aucune classe avec des étudiants inscrits pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

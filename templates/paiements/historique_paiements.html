@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Historique des paiements{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Historique des paiements</h2>
+
+<a href="{% url 'dashboard_caissier' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour</a>
+
+<div class="card p-3 mb-3">
+    <h5>{{ inscription.etudiant.utilisateur.first_name }} {{ inscription.etudiant.utilisateur.last_name }} ({{ inscription.etudiant.matricule }})</h5>
+    <p class="text-muted mb-0">{{ inscription.filiere }} - {{ inscription.niveau }} - Tél: {{ inscription.telephone_inscription|default:"-" }}</p>
+</div>
+
+<div class="card p-3">
+    {% if paiements %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Tranche</th>
+                <th>Montant</th>
+                <th>Mode</th>
+                <th>Date</th>
+                <th>Encaissé par</th>
+                <th>Reçu</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paiement in paiements %}
+            <tr>
+                <td>{{ paiement.numero_tranche }} / 3</td>
+                <td>{{ paiement.montant }} FCFA</td>
+                <td>{{ paiement.get_mode_paiement_display }}</td>
+                <td>{{ paiement.date_paiement }}</td>
+                <td>{{ paiement.enregistre_par }}</td>
+                <td><a href="{% url 'recu_paiement' paiement.id %}" class="btn btn-outline-primary btn-sm">Voir le reçu</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">Aucun paiement enregistré pour cet étudiant.</p>
+    {% endif %}
+</div>
+{% endblock %}

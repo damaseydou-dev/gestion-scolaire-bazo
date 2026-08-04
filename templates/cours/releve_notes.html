@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Relevé de notes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3 no-print">
+    <a href="{% url 'liste_etudiants_releve' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour</a>
+    {% if annee_selectionnee %}
+    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Imprimer le relevé</button>
+    {% endif %}
+</div>
+
+<div class="card p-3 mb-3 no-print" style="max-width: 500px;">
+    <form method="get">
+        <label class="form-label">Choisissez l'année académique</label>
+        <div class="input-group">
+            <select name="annee" class="form-select" required>
+                <option value="" selected disabled>Sélectionnez une année</option>
+                {% for annee in annees_disponibles %}
+                <option value="{{ annee.id }}" {% if annee_selectionnee.id == annee.id %}selected{% endif %}>{{ annee.libelle }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Afficher</button>
+        </div>
+    </form>
+</div>
+
+{% if annee_selectionnee %}
+<div class="card p-5 mx-auto" id="releve" style="max-width: 750px; border: 2px solid #1B7A4C;">
+    <div class="text-center mb-4">
+        <img src="/static/images/logo_bazo.jpeg" alt="Logo BAZO" style="height: 70px;">
+        <h4 class="mt-2 mb-0">Université BAZO</h4>
+        <p class="text-muted">Relevé de notes officiel</p>
+    </div>
+
+    <hr>
+
+    <table class="table table-borderless">
+        <tr>
+            <td><strong>Étudiant</strong></td>
+            <td>{{ etudiant.utilisateur.first_name }} {{ etudiant.utilisateur.last_name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Matricule</strong></td>
+            <td>{{ etudiant.matricule }}</td>
+        </tr>
+        <tr>
+            <td><strong>Date de naissance</strong></td>
+            <td>{{ etudiant.date_naissance|default:"-" }}</td>
+        </tr>
+        {% if inscription %}
+        <tr>
+            <td><strong>Filière / Niveau</strong></td>
+            <td>{{ inscription.filiere }} - {{ inscription.niveau }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td><strong>Année académique</strong></td>
+            <td>{{ annee_selectionnee.libelle }}</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    {% if lignes_releve %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cours</th>
+                <th>Crédits</th>
+                <th>Moyenne /20</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ligne in lignes_releve %}
+            <tr>
+                <td>{{ ligne.cours.intitule }}</td>
+                <td>{{ ligne.credits }}</td>
+                <td>{{ ligne.moyenne }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-4">
+            <small class="text-muted">Total crédits</small>
+            <p class="fw-bold">{{ total_credits }}</p>
+        </div>
+        <div class="col-4">
+            <small class="text-muted">Moyenne générale</small>
+            <p class="fw-bold fs-4 text-success">{{ moyenne_generale }} /20</p>
+        </div>
+        <div class="col-4">
+            <small class="text-muted">Mention</small>
+            <p class="fw-bold">{{ mention }}</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-5">
+        <div class="col-6">
+            <p class="text-muted">Fait à Bamako, le _______________</p>
+        </div>
+        <div class="col-6 text-end">
+            <p class="text-muted">Signature et cachet de l'administration</p>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted mb-0">Aucune note enregistrée pour cette année académique.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<style>
+@media print {
+    .no-print, .navbar-bazo { display: none !important; }
+    #releve { border: 2px solid #000 !important; }
+}
+</style>
+{% endblock %}

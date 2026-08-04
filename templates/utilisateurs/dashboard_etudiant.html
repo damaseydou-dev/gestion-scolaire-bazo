@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Tableau de bord Étudiant{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Bienvenue, {{ etudiant.utilisateur.first_name }} {{ etudiant.utilisateur.last_name }}</h2>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card p-3">
+            <h6 class="text-muted">Matricule</h6>
+            <p class="mb-0 fs-5">{{ etudiant.matricule }}</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-3">
+            <h6 class="text-muted">Date de naissance</h6>
+            <p class="mb-0 fs-5">{{ etudiant.date_naissance|default:"Non renseignée" }}</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-3">
+            <h6 class="text-muted">Lieu de naissance</h6>
+            <p class="mb-0 fs-5">{{ etudiant.lieu_naissance|default:"Non renseigné" }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-4 mb-3">
+        <div class="card p-4">
+            <h5>Mes notes</h5>
+            <p class="text-muted">Consultez vos résultats académiques.</p>
+            <a href="{% url 'mes_notes' %}" class="btn btn-primary btn-sm">Voir mes notes</a>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-4">
+            <h5>Mon emploi du temps</h5>
+            <p class="text-muted">Consultez vos cours de la semaine.</p>
+            <a href="{% url 'emploi_temps_etudiant' %}" class="btn btn-primary btn-sm">Voir l'emploi du temps</a>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card p-4">
+            <h5>Mes inscriptions</h5>
+            <p class="text-muted">Gérez vos demandes d'inscription.</p>
+            <a href="{% url 'mes_inscriptions' %}" class="btn btn-primary btn-sm">Voir mes inscriptions</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card p-4">
+            <h5>Ma scolarité</h5>
+            <p class="text-muted">Consultez vos échéances et votre statut de paiement.</p>
+            <a href="{% url 'ma_scolarite' %}" class="btn btn-primary btn-sm">Voir ma scolarité</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

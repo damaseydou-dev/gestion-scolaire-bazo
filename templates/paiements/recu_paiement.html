@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Reçu de paiement{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3 no-print">
+    <a href="{% url 'dashboard_caissier' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour</a>
+    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Imprimer le reçu</button>
+</div>
+
+<div class="card p-5 mx-auto" id="recu" style="max-width: 700px; border: 2px solid #1B7A4C;">
+    <div class="text-center mb-4">
+        <img src="/static/images/logo_bazo.jpeg" alt="Logo BAZO" style="height: 70px;">
+        <h4 class="mt-2 mb-0">Université BAZO</h4>
+        <p class="text-muted">Reçu de paiement des frais de scolarité</p>
+    </div>
+
+    <hr>
+
+    <div class="row mb-3">
+        <div class="col-6">
+            <strong>Reçu N° :</strong> {{ paiement.id }}
+        </div>
+        <div class="col-6 text-end">
+            <strong>Date :</strong> {{ paiement.date_paiement }}
+        </div>
+    </div>
+
+    <table class="table table-borderless">
+        <tr>
+            <td><strong>Étudiant</strong></td>
+            <td>{{ inscription.etudiant.utilisateur.first_name }} {{ inscription.etudiant.utilisateur.last_name }}</td>
+        </tr>
+        <tr>
+            <td><strong>Matricule</strong></td>
+            <td>{{ inscription.etudiant.matricule }}</td>
+        </tr>
+        <tr>
+            <td><strong>Téléphone</strong></td>
+            <td>{{ inscription.telephone_inscription|default:"-" }}</td>
+        </tr>
+        <tr>
+            <td><strong>Filière / Niveau</strong></td>
+            <td>{{ inscription.filiere }} - {{ inscription.niveau }}</td>
+        </tr>
+        <tr>
+            <td><strong>Année académique</strong></td>
+            <td>{{ inscription.annee_academique }}</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <table class="table">
+        <tr>
+            <td><strong>Tranche N°</strong></td>
+            <td>{{ paiement.numero_tranche }} / 3</td>
+        </tr>
+        <tr>
+            <td><strong>Mode de paiement</strong></td>
+            <td>{{ paiement.get_mode_paiement_display }}</td>
+        </tr>
+        <tr>
+            <td><strong>Montant versé</strong></td>
+            <td class="fs-5 fw-bold text-success">{{ paiement.montant }} FCFA</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-3">
+            <small class="text-muted">Montant total</small>
+            <p class="fw-bold">{{ montant_total }} FCFA</p>
+        </div>
+        <div class="col-3">
+            <small class="text-muted">Remise</small>
+            <p class="fw-bold">{{ remise }} FCFA</p>
+        </div>
+        <div class="col-3">
+            <small class="text-muted">Total payé à ce jour</small>
+            <p class="fw-bold">{{ montant_paye }} FCFA</p>
+        </div>
+        <div class="col-3">
+            <small class="text-muted">Solde restant</small>
+            <p class="fw-bold text-danger">{{ solde }} FCFA</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <p class="text-end mt-4">Encaissé par : <strong>{{ paiement.enregistre_par }}</strong></p>
+</div>
+
+<style>
+@media print {
+    .no-print, .navbar-bazo { display: none !important; }
+    #recu { border: 2px solid #000 !important; }
+}
+</style>
+{% endblock %}

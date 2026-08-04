@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Mes inscriptions{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Mes demandes d'inscription</h2>
+
+<a href="{% url 'dashboard_etudiant' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour au tableau de bord</a>
+<a href="{% url 'demande_inscription' %}" class="btn btn-primary btn-sm mb-3">+ Nouvelle demande</a>
+
+<div class="card p-3">
+    {% if inscriptions %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Filière</th>
+                <th>Niveau</th>
+                <th>Année académique</th>
+                <th>Date de demande</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscription in inscriptions %}
+            <tr>
+                <td>{{ inscription.filiere }}</td>
+                <td>{{ inscription.niveau }}</td>
+                <td>{{ inscription.annee_academique }}</td>
+                <td>{{ inscription.date_inscription }}</td>
+                <td>
+                    {% if inscription.statut == 'VALIDEE' %}
+                        <span class="badge bg-success">Validée</span>
+                    {% elif inscription.statut == 'EN_ATTENTE' %}
+                        <span class="badge bg-warning text-dark">En attente</span>
+                    {% else %}
+                        <span class="badge bg-danger">Rejetée</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">Vous n'avez encore soumis aucune demande d'inscription.</p>
+    {% endif %}
+</div>
+{% endblock %}

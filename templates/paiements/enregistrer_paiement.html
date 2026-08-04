@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Enregistrer un paiement{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Enregistrer un paiement</h2>
+
+<a href="{% url 'dashboard_caissier' %}" class="btn btn-outline-secondary btn-sm mb-3">&larr; Retour</a>
+
+<div class="card p-4" style="max-width: 600px;">
+    <h5>{{ inscription.etudiant.utilisateur.first_name }} {{ inscription.etudiant.utilisateur.last_name }} ({{ inscription.etudiant.matricule }})</h5>
+    <p class="text-muted">{{ inscription.filiere }} - {{ inscription.niveau }} - {{ inscription.annee_academique }}</p>
+
+    <div class="row mb-3">
+        <div class="col-4">
+            <small class="text-muted">Montant total</small>
+            <p class="fw-bold">{{ montant_total }} FCFA</p>
+        </div>
+        <div class="col-4">
+            <small class="text-muted">Déjà payé</small>
+            <p class="fw-bold">{{ montant_paye }} FCFA</p>
+        </div>
+        <div class="col-4">
+            <small class="text-muted">Solde restant</small>
+            <p class="fw-bold text-danger">{{ solde }} FCFA</p>
+        </div>
+    </div>
+
+    <p class="text-muted">Tranche {{ nb_tranches_existantes|add:1 }} sur 3 maximum</p>
+
+    {% if nb_tranches_existantes >= 3 %}
+        <div class="alert alert-warning">Le nombre maximum de tranches (3) a déjà été atteint.</div>
+    {% else %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Montant versé (FCFA)</label>
+            <input type="number" step="1" min="1" max="{{ solde }}" name="montant" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mode de paiement</label>
+            <select name="mode_paiement" class="form-select" required>
+                <option value="ESPECES">Espèces</option>
+                <option value="MOBILE_MONEY">Mobile Money</option>
+                <option value="VIREMENT">Virement bancaire</option>
+                <option value="CHEQUE">Chèque</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Date du paiement</label>
+            <input type="date" name="date_paiement" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Enregistrer le paiement</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
