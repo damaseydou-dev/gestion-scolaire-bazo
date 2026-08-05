@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Carte d'étudiant{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3 no-print">
+    <a href="{% url 'liste_etudiants_releve' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour</a>
+    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Imprimer la carte</button>
+</div>
+
+{% if not inscription %}
+<div class="card p-4">
+    <p class="text-muted mb-0">Cet étudiant n'a pas d'inscription validée. La carte ne peut pas être générée.</p>
+</div>
+{% else %}
+
+<div id="carte-etudiant" style="width: 340px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.25); font-family: Arial, sans-serif; margin: 0 auto;">
+    <div style="background: #1B7A4C; color: white; padding: 10px 14px; display: flex; align-items: center; gap: 8px;">
+        <img src="/static/images/logo_bazo.jpeg" alt="Logo" style="height: 34px; border-radius: 4px; background: white; padding: 2px;">
+        <div>
+            <div style="font-weight: bold; font-size: 14px; line-height: 1.1;">Université BAZO</div>
+            <div style="font-size: 10px;">Carte d'étudiant</div>
+        </div>
+    </div>
+
+    <div style="display: flex; padding: 12px 14px; gap: 12px; background: #fff;">
+        <div style="width: 80px; height: 95px; border: 1px solid #ccc; background: #f4f4f4; flex-shrink: 0; overflow: hidden;">
+            {% if etudiant.photo %}
+            <img src="{{ etudiant.photo.url }}" alt="Photo" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:10px; text-align:center;">Photo non fournie</div>
+            {% endif %}
+        </div>
+        <div style="font-size: 12px; line-height: 1.5;">
+            <div style="font-weight: bold; font-size: 14px; color: #1B7A4C;">{{ etudiant.utilisateur.last_name }} {{ etudiant.utilisateur.first_name }}</div>
+            <div><strong>Matricule :</strong> {{ etudiant.matricule }}</div>
+            <div><strong>Filière :</strong> {{ inscription.filiere }}</div>
+            <div><strong>Niveau :</strong> {{ inscription.niveau }}</div>
+            <div><strong>Né(e) le :</strong> {{ etudiant.date_naissance|default:"-" }}</div>
+        </div>
+    </div>
+
+    <div style="background: #f0f0f0; padding: 6px 14px; font-size: 10px; color: #444; display: flex; justify-content: space-between;">
+        <span>Année : {{ inscription.annee_academique }}</span>
+        <span style="color: #7A1F2B; font-weight: bold;">Valide pour l'année en cours</span>
+    </div>
+</div>
+
+<p class="text-center text-muted mt-4 no-print" style="max-width: 340px; margin: 20px auto 0;">
+    Astuce : découpez la carte après impression, ou faites-la plastifier pour plus de solidité.
+</p>
+
+{% endif %}
+
+<style>
+@media print {
+    .no-print, .navbar-bazo { display: none !important; }
+}
+</style>
+{% endblock %}

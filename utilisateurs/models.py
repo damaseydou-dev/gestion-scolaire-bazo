@@ -42,6 +42,12 @@ class Etudiant(models.Model):
         validators=[validateur_telephone],
         verbose_name="Téléphone du parent/tuteur (contact d'urgence)"
     )
+    photo = models.ImageField(
+        upload_to='photos_etudiants/',
+        blank=True,
+        null=True,
+        verbose_name="Photo d'identité"
+    )
 
     def __str__(self):
         return f"Étudiant: {self.matricule} - {self.utilisateur}"

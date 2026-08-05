@@ -285,3 +285,22 @@ def liste_etudiants_classe_view(request, filiere_id, niveau_id, annee_id):
         'annee': annee,
         'inscriptions': inscriptions
     })
+
+
+@login_required
+def carte_etudiant_view(request, etudiant_id):
+    """Génère la carte d'étudiant imprimable, pour l'admin"""
+    if request.user.role != 'admin':
+        return redirect('redirection_dashboard')
+
+    from utilisateurs.models import Etudiant
+    etudiant = get_object_or_404(Etudiant, id=etudiant_id)
+
+    inscription = Inscription.objects.filter(
+        etudiant=etudiant, statut='VALIDEE'
+    ).select_related('filiere', 'niveau', 'annee_academique').order_by('-date_inscription').first()
+
+    return render(request, 'paiements/carte_etudiant.html', {
+        'etudiant': etudiant,
+        'inscription': inscription
+    })

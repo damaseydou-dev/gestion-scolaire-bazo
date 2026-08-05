@@ -10,4 +10,5 @@ urlpatterns = [
     path('ma-scolarite/', views.ma_scolarite_view, name='ma_scolarite'),
     path('classes/', views.liste_classes_view, name='liste_classes'),
     path('classes/<int:filiere_id>/<int:niveau_id>/<int:annee_id>/', views.liste_etudiants_classe_view, name='liste_etudiants_classe'),
+    path('carte/<int:etudiant_id>/', views.carte_etudiant_view, name='carte_etudiant'),
 ]
