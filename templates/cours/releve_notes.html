@@ -5,10 +5,12 @@
 <div class="d-flex justify-content-between mb-3 no-print">
     <a href="{% url 'liste_etudiants_releve' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour</a>
     {% if annee_selectionnee %}
-    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Imprimer le relevé</button>
+    <div>
+        <a href="{% url 'releve_notes_pdf' etudiant.id %}?annee={{ annee_selectionnee.id }}" class="btn btn-success btn-sm me-2">📄 Télécharger PDF</a>
+        <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Imprimer le relevé</button>
+    </div>
     {% endif %}
 </div>
-
 <div class="card p-3 mb-3 no-print" style="max-width: 500px;">
     <form method="get">
         <label class="form-label">Choisissez l'année académique</label>

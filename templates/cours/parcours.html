@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Parcours académique{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    {% if est_admin %}
+    <a href="{% url 'liste_etudiants_releve' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour</a>
+    {% else %}
+    <a href="{% url 'redirection_dashboard' %}" class="btn btn-outline-secondary btn-sm">&larr; Retour au tableau de bord</a>
+    {% endif %}
+</div>
+
+<h3>Parcours académique</h3>
+<p class="text-muted">{{ etudiant.utilisateur.first_name }} {{ etudiant.utilisateur.last_name }} — {{ etudiant.matricule }}</p>
+
+{% if parcours %}
+<p class="fw-bold fs-5">
+    {% for p in parcours %}{{ p.inscription.niveau }}{% if not forloop.last %} &rarr; {% endif %}{% endfor %}
+</p>
+
+{% for p in parcours %}
+<div class="card p-3 mb-3" style="border-left: 5px solid #1B7A4C;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ p.inscription.annee_academique.libelle }} — {{ p.inscription.niveau }}</h5>
+        <span class="badge {% if p.inscription.statut == 'VALIDEE' %}bg-success{% elif p.inscription.statut == 'REJETEE' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+            {{ p.inscription.get_statut_display }}
+        </span>
+    </div>
+    <p class="text-muted mb-2">{{ p.inscription.filiere }}</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <small class="text-muted">Résultats</small>
+            <p class="mb-0">Moyenne : <strong>{% if p.moyenne is not None %}{{ p.moyenne }} /20{% else %}—{% endif %}</strong></p>
+            <p class="mb-0">Mention : <strong>{{ p.mention }}</strong></p>
+            <p class="mb-0">Crédits : <strong>{{ p.credits }}</strong></p>
+        </div>
+        <div class="col-md-6">
+            <small class="text-muted">Scolarité</small>
+            <p class="mb-0">Montant : {{ p.total }} FCFA (remise : {{ p.remise }})</p>
+            <p class="mb-0">Payé : {{ p.paye }} FCFA</p>
+            <p class="mb-0">Reste : <strong>{{ p.reste }} FCFA</strong></p>
+        </div>
+    </div>
+
+    {% if est_admin and p.moyenne is not None %}
+    <div class="mt-2">
+        <a href="{% url 'releve_notes_pdf' etudiant.id %}?annee={{ p.inscription.annee_academique.id }}" class="btn btn-success btn-sm">📄 Relevé PDF</a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% else %}
+<p class="text-muted">Aucune inscription enregistrée pour cet étudiant.</p>
+{% endif %}
+{% endblock %}

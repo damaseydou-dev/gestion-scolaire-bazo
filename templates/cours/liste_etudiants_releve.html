@@ -32,9 +32,10 @@
                 <td>{{ etudiant.matricule }}</td>
                 <td>{{ etudiant.utilisateur.first_name }} {{ etudiant.utilisateur.last_name }}</td>
                 <td>
-    <a href="{% url 'releve_notes' etudiant.id %}" class="btn btn-primary btn-sm">Voir le relevé</a>
-    <a href="{% url 'carte_etudiant' etudiant.id %}" class="btn btn-outline-primary btn-sm">Voir la carte</a>
-</td>
+                    <a href="{% url 'releve_notes' etudiant.id %}" class="btn btn-primary btn-sm">Voir le relevé</a>
+                    <a href="{% url 'parcours_etudiant' etudiant.id %}" class="btn btn-success btn-sm">Parcours</a>
+                    <a href="{% url 'carte_etudiant' etudiant.id %}" class="btn btn-outline-primary btn-sm">Voir la carte</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

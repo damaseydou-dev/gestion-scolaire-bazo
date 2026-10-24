@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
+import re
 
 validateur_telephone = RegexValidator(
     regex=r'^\d{8}$',
@@ -32,7 +33,7 @@ class Etudiant(models.Model):
         on_delete=models.CASCADE,
         related_name='profil_etudiant'
     )
-    matricule = models.CharField(max_length=20, unique=True)
+    matricule = models.CharField(max_length=20, unique=True, blank=True)
     date_naissance = models.DateField(blank=True, null=True)
     lieu_naissance = models.CharField(max_length=100, blank=True, null=True)
     telephone_parent = models.CharField(
@@ -49,6 +50,18 @@ class Etudiant(models.Model):
         verbose_name="Photo d'identité"
     )
 
+
+    def save(self, *args, **kwargs):
+        if not self.matricule:
+            max_numero = 0
+            for etu in Etudiant.objects.exclude(matricule=''):
+                match = re.match(r'^ETU(\d+)$', etu.matricule)
+                if match:
+                    numero = int(match.group(1))
+                    if numero > max_numero:
+                        max_numero = numero
+            self.matricule = f"ETU{max_numero + 1:03d}"
+        super().save(*args, **kwargs)
     def __str__(self):
         return f"Étudiant: {self.matricule} - {self.utilisateur}"
 

@@ -3,6 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Utilisateur, Etudiant, Enseignant, Administrateur, Caissier
 
 
+MOT_DE_PASSE_DEFAUT_ETUDIANT = "bazo2026"
+
+
 @admin.register(Utilisateur)
 class UtilisateurAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'last_name', 'email', 'role')
@@ -10,6 +13,10 @@ class UtilisateurAdmin(UserAdmin):
         ('Informations supplémentaires', {'fields': ('role', 'telephone')}),
     )
 
+    def save_model(self, request, obj, form, change):
+        if not change and obj.role == 'etudiant':
+            obj.set_password(MOT_DE_PASSE_DEFAUT_ETUDIANT)
+        super().save_model(request, obj, form, change)
 
 @admin.register(Etudiant)
 class EtudiantAdmin(admin.ModelAdmin):

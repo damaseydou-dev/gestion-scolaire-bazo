@@ -75,4 +75,88 @@
         <a href="/admin/">interface d'administration complète</a> pour gérer la plateforme.
     </p>
 </div>
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-muted mb-3">Répartition des étudiants par filière</h6>
+            <canvas id="chartFiliere"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-muted mb-3">Évolution des inscriptions</h6>
+            <canvas id="chartInscriptions"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-muted mb-3">Taux de paiement</h6>
+            <canvas id="chartPaiement"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h6 class="text-muted mb-3">Statuts des inscriptions</h6>
+            <canvas id="chartStatut"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    // Répartition par filière (camembert)
+    new Chart(document.getElementById('chartFiliere'), {
+        type: 'pie',
+        data: {
+            labels: {{ labels_filiere|safe }},
+            datasets: [{
+                data: {{ data_filiere|safe }},
+                backgroundColor: ['#1B7A4C', '#7A1F2B', '#2E86AB', '#F4A261', '#8E44AD', '#E76F51']
+            }]
+        }
+    });
+
+    // Évolution des inscriptions (courbe)
+    new Chart(document.getElementById('chartInscriptions'), {
+        type: 'line',
+        data: {
+            labels: {{ labels_mois|safe }},
+            datasets: [{
+                label: 'Inscriptions',
+                data: {{ data_mois|safe }},
+                borderColor: '#1B7A4C',
+                backgroundColor: 'rgba(27, 122, 76, 0.1)',
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+
+    // Taux de paiement (barres)
+    new Chart(document.getElementById('chartPaiement'), {
+        type: 'bar',
+        data: {
+            labels: ['Payé', 'Restant à payer'],
+            datasets: [{
+                data: [{{ total_paye }}, {{ total_restant }}],
+                backgroundColor: ['#1B7A4C', '#7A1F2B']
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Statuts des inscriptions (camembert)
+    new Chart(document.getElementById('chartStatut'), {
+        type: 'doughnut',
+        data: {
+            labels: {{ labels_statut|safe }},
+            datasets: [{
+                data: {{ data_statut|safe }},
+                backgroundColor: ['#F4A261', '#1B7A4C', '#7A1F2B']
+            }]
+        }
+    });
+</script>
 {% endblock %}

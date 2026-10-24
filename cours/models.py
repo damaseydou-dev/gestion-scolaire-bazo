@@ -69,3 +69,27 @@ class Note(models.Model):
     class Meta:
         verbose_name = "Note"
         verbose_name_plural = "Notes"
+
+
+class Presence(models.Model):
+    etudiant = models.ForeignKey(
+        Etudiant,
+        on_delete=models.CASCADE,
+        related_name='presences'
+    )
+    cours = models.ForeignKey(
+        Cours,
+        on_delete=models.CASCADE,
+        related_name='presences'
+    )
+    date_seance = models.DateField()
+    present = models.BooleanField(default=True)
+
+    def __str__(self):
+        statut = "Présent" if self.present else "Absent"
+        return f"{self.etudiant} - {self.cours} - {self.date_seance} - {statut}"
+
+    class Meta:
+        verbose_name = "Présence"
+        verbose_name_plural = "Présences"
+        unique_together = ('etudiant', 'cours', 'date_seance')

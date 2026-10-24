@@ -131,3 +131,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configuration email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'Université BAZO <noreply@bazo.edu>'

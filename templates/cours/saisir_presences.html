@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Saisie des présences{% endblock %}
+
+{% block content %}
+<h3>Présences — {{ cours.intitule }}</h3>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3" style="max-width: 250px;">
+        <label class="form-label">Date de la séance</label>
+        <input type="date" name="date_seance" class="form-control" required>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Étudiant</th>
+                <th>Présent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inscription in inscriptions %}
+            <tr>
+                <td>{{ inscription.etudiant.utilisateur.first_name }} {{ inscription.etudiant.utilisateur.last_name }}</td>
+                <td>
+                    <input type="checkbox" name="present_{{ inscription.etudiant.id }}" checked>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Enregistrer les présences</button>
+</form>
+{% endblock %}
